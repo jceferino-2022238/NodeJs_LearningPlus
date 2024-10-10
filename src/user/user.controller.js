@@ -1,7 +1,7 @@
 import { response, request } from "express";
 import bcryptjs from "bcryptjs";
 import dotenv from "dotenv";
-import User from "./user.model";
+import User from "./user.model.js";
 export const usersPost = async (req, res) =>{
     const {name, email, password, role} = req.body;
     const user = new User({name, email, password, role})
