@@ -7,7 +7,7 @@ import {
     putCourse,
     deleteCourse
 } from "./course.controller.js";
-import { existsCourseById } from "../helpers/db-validators.js";
+import { existsCourseById, doesCourseExists} from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
 import { validateJWT } from "../middlewares/validate-jwt.js";
 import { isAdmin, isEditor, isUser, isAdminOrEditor } from "../middlewares/validate-role.js";
@@ -27,6 +27,7 @@ router.post(
         validateJWT,
         isAdmin,
         check("title", "The title isn't optional").not().isEmpty(),
+        check("title").custom(doesCourseExists),
         check("body", "The body isn't optional").not().isEmpty(),
         check("image", "The image isn't optional").not().isEmpty(),
         validateFields,

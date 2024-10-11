@@ -7,13 +7,15 @@ import { defaultAdmin } from "../src/user/user.controller.js";
 import userRoutes from "../src/user/user.routes.js";
 import authRoutes from "../src/auth/auth.routes.js"
 import courseRoutes from "../src/courses/course.routes.js";
+import profileRoutes from "../src/profiles/profile.routes.js"
 class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT;
-        this.userPath = "/learningPlus/v1/users"
-        this.authPath = "/learningPlus/v1/auth"
-        this.coursePath = "/learningPlus/v1/course"
+        this.userPath = "/learningPlus/v1/users";
+        this.authPath = "/learningPlus/v1/auth";
+        this.coursePath = "/learningPlus/v1/course";
+        this.profilePath = "/learningPlus/v1/profile";
 
         this.middlewares();
         this.conectarDB();
@@ -40,7 +42,8 @@ class Server{
     routes(){
         this.app.use(this.userPath, userRoutes);
         this.app.use(this.authPath, authRoutes);
-        this.app.use(this.coursePath, courseRoutes)
+        this.app.use(this.coursePath, courseRoutes);
+        this.app.use(this.profilePath, profileRoutes);
     }
 
     listen(){
