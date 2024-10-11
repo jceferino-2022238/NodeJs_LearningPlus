@@ -12,6 +12,10 @@ const CourseSchema = new mongoose.Schema({
     image: {
         type: String,
         required: [true, "Image is required"],
+    },
+    state: {
+        type: Boolean,
+        default: true
     }
 })
 CourseSchema.methods.toJSON = function(){

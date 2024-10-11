@@ -23,7 +23,6 @@ router.get("/",
 router.get("/:id",
     [
         validateJWT,
-        isAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsUserById),
         validateFields

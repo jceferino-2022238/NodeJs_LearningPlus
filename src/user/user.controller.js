@@ -20,12 +20,15 @@ export const postEditor = async (req, res) =>{
 
     const salt = bcryptjs.genSaltSync();
     user.password = bcryptjs.hashSync(password, salt);
-    await usuario.save();
+    await user.save();
+    res.status(200).json({
+        user,
+    })
 }
 
 export const getUsers = async (req = request, res = response) =>{
     const {limit, from} = req.query;
-    const query = {estado: true};
+    const query = {state: true};
 
     const [total, users] = await Promise.all([
         User.countDocuments(query),

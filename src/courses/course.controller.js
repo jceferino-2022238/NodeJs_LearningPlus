@@ -12,7 +12,7 @@ export const coursePost = async (req, res) =>{
 
 export const getCourses = async (req = request, res = response) =>{
     const {limit, from} = req.query;
-    const query = {estado: true};
+    const query = {state: true};
 
     const [total, courses] = await Promise.all([
         Course.countDocuments(query),
