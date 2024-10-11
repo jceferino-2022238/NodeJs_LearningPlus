@@ -8,6 +8,7 @@ export const blogPost = async(req, res) =>{
         blog
     })
 }
+
 export const getBlogs = async (req = request, res = response) =>{
     const {limit, from} = req.query;
     const query = {state: true};

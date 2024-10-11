@@ -43,7 +43,7 @@ import {
  router.put("/:id",
     [
         validateJWT,
-        isAdminOrEditor,
+        isAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsProfileById),
         validateFields,
