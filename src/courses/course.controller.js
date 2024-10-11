@@ -40,7 +40,7 @@ export const putCourse = async (req, res = response) =>{
     await Course.findByIdAndUpdate(id, rest)
     const course = await Course.findOne({_id: id})
     res.status(200).json({
-        msg: "Course Updagted",
+        msg: "Course Upgraded",
         course
     })
 }

@@ -1,25 +1,24 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import { 
-    coursePost,
-    getCourses,
-    getCourseById,
-    putCourse,
-    deleteCourse
-} from "./course.controller.js";
-import { existsCourseById, doesCourseExists} from "../helpers/db-validators.js";
+    blogPost,
+    getBlogs,
+    getBlogById,
+    putBlog,
+    deleteBlog
+} from "./blog.controller.js";
+import { existsBlogById, doesBlogExists } from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
 import { validateJWT } from "../middlewares/validate-jwt.js";
-import { isAdmin, isEditor, isUser, isAdminOrEditor } from "../middlewares/validate-role.js";
+import { isAdmin, isEditor, isAdminOrEditor, isUser } from "../middlewares/validate-role.js";
 
 const router = Router();
-
 router.get("/",
     [
         validateJWT,
     ],
-    getCourses  
-);
+    getBlogs
+),
 
 router.post(
     "/",
@@ -27,34 +26,37 @@ router.post(
         validateJWT,
         isAdmin,
         check("title", "The title isn't optional").not().isEmpty(),
-        check("title").custom(doesCourseExists),
+        check("title").custom(doesBlogExists),
         check("body", "The body isn't optional").not().isEmpty(),
         check("image", "The image isn't optional").not().isEmpty(),
         validateFields,
     ],
-    coursePost
+    blogPost
 )
+
 router.get(
     "/:id",
     [
         validateJWT,
         check("id", "Not a valid ID").isMongoId(),
-        check("id").custom(existsCourseById),
+        check("id").custom(existsBlogById),
         validateFields,
     ],
-    getCourseById
+    getBlogById
 )
+
 router.put(
     "/:id",
     [
         validateJWT,
         isAdminOrEditor,
         check("id", "Not a valid ID").isMongoId(),
-        check("id").custom(existsCourseById),
-        validateFields,
+        check("id").custom(existsBlogById),
+        validateFields
     ],
-    putCourse
+    putBlog
 )
+
 router.delete(
     "/:id",
     [
@@ -64,6 +66,7 @@ router.delete(
         check("id").not().isEmpty(),
         validateFields,
     ],
-    deleteCourse
+    deleteBlog
 )
+
 export default router;
