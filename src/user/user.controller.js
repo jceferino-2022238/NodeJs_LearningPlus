@@ -87,7 +87,7 @@ export const defaultAdmin = async () =>{
                 role: "ADMIN_ROLE"
             })
             const salt = bcryptjs.genSaltSync();
-            newAdmin.password = bcryptjs.hashSync(newAdmin.password. salt)
+            newAdmin.password = bcryptjs.hashSync(newAdmin.password, salt)
             await newAdmin.save();
             consoleLog("Admin has been created", newAdmin)
         }

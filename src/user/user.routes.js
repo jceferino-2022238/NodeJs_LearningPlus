@@ -51,7 +51,7 @@ router.post("/postEditor",
         validateFields
     ],
     postEditor
-);
+)
 router.put("/:id",
     [
         validateJWT,
@@ -59,7 +59,8 @@ router.put("/:id",
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsUserById),
         validateFields
-    ]
+    ],
+    putUser,
 );
 router.delete("/:id",
     [
@@ -68,6 +69,7 @@ router.delete("/:id",
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsUserById),
         validateFields
-    ]
+    ],
+    deleteUser,
 );
 export default router;
