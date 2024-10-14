@@ -6,7 +6,9 @@ import {
     getUsers,
     getUserById,
     putUser,
-    deleteUser
+    deleteUser,
+    putMyUser,
+    deleteMyUser
 } from "./user.controller.js";
 
 import { doesEmailExists, existsUserById } from "../helpers/db-validators.js";
@@ -61,6 +63,15 @@ router.put("/:id",
     ],
     putUser,
 );
+router.put("/putMyAccount/:id",
+    [
+        validateJWT,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsUserById),
+        validateFields
+    ],
+    putMyUser
+)
 router.delete("/:id",
     [
         validateJWT,
@@ -71,4 +82,13 @@ router.delete("/:id",
     ],
     deleteUser,
 );
+router.delete("/deleteMyUser/:id",
+    [
+        validateJWT,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsUserById),
+        validateFields
+    ],
+    deleteMyUser
+)
 export default router;

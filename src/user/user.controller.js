@@ -52,7 +52,7 @@ export const getUserById = async (req, res) =>{
 
 export const putUser = async (req, res = response) =>{
     const {id} = req.params;
-    const {_id, password, email, ...rest} = req.body;
+    const {_id, email, ...rest} = req.body;
     if(password){
         const salt = bcryptjs.genSaltSync()
         rest.password = bcryptjs.hashSync(password, salt)
@@ -65,7 +65,38 @@ export const putUser = async (req, res = response) =>{
         user
     })
 }
+export const putMyUser = async (req, res = response) =>{
+    const { id } = req.params;
+    const authUser = req.user;
+    if(authUser._id != id){
+        throw new Error(`You can't edit another user's account`)
+    }
+    const {_id, password, ...rest} = req.body;
+    if(password){
+        const salt = bcryptjs.genSaltSync()
+        rest.password = bcryptjs.hashSync(password, salt)
+    }
+    await User.findByIdAndUpdate(id, rest)
+    const user = await User.findOne({_id: id})
 
+    res.status(200).json({
+        msg: "Account updated",
+        user
+    })
+}
+export const deleteMyUser = async (req, res) =>{
+    const { id } = req.params;
+    const authUser = req.user;
+    if(authUser._id != id){
+        throw new Error(`You can't delete another user's account`)
+    }
+    const user = await User.findByIdAndUpdate(id, {state: false})
+    res.status(200).json({
+        msg: "Your Account has been deleted, Goodbye",
+        user,
+        authUser
+    })
+}
 export const deleteUser = async(req, res) =>{
     const {id} = req.params;
     const user = await User.findByIdAndUpdate(id, {state: false})
