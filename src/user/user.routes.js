@@ -1,7 +1,8 @@
 import { Router } from "express";
 import { check } from "express-validator";
 import {
-    usersPost,
+    postUserOrAdmin,
+    registerOnPage,
     postEditor,
     getUsers,
     getUserById,
@@ -14,11 +15,12 @@ import {
 import { doesEmailExists, existsUserById } from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
 import { validateJWT } from "../middlewares/validate-jwt.js";
-import { isAdmin, isEditor, isUser } from "../middlewares/validate-role.js";
+import { isDefaultOrAdmin, isAdmin, isEditor, isUser } from "../middlewares/validate-role.js";
 const router = Router();
 router.get("/",
     [
         validateJWT,
+        isDefaultOrAdmin
     ],
     getUsers
 );
@@ -33,18 +35,32 @@ router.get("/:id",
 );
 router.post("/",
     [
+        check("name", "Name is not and optional field").not().isEmpty(),
+        check("password", "Password is not optional").not().isEmpty(),
+        check("password", "Password must be longer than 6 characters").isLength({min: 6}),
+        check("email", "Email is not optional").not().isEmpty(),
+        check("email", "This is not a valid email").isEmail(),
+        check("email").custom(doesEmailExists),
+        validateFields
+    ],
+    registerOnPage
+)
+router.post("/postUserOrAdmin",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
         check("name", "Name is not an optional field").not().isEmpty(),
         check("password", "Password must be longer than 6 characters").isLength({min: 6}),
         check("email", "This is not a valid email").isEmail(),
         check("email").custom(doesEmailExists),
         validateFields
     ],
-    usersPost
+    postUserOrAdmin
 );
 router.post("/postEditor",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("name", "Name is not an optional field").not().isEmpty(),
         check("password", "Password must be longer than 6 characters").isLength({min: 6}),
         check("email", "This is not a valid email").isEmail(),
@@ -56,7 +72,7 @@ router.post("/postEditor",
 router.put("/:id",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsUserById),
         validateFields
@@ -75,7 +91,7 @@ router.put("/putMyAccount/:id",
 router.delete("/:id",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsUserById),
         validateFields
@@ -92,3 +108,4 @@ router.delete("/deleteMyUser/:id",
     deleteMyUser
 )
 export default router;
+
