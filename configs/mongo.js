@@ -25,7 +25,7 @@ export const dbConnection = async () =>{
             serverSelectionTimeoutMS: 5000,
             maxPoolSize: 50
         })
-    } catch (e) {
+    } catch (err) {
         console.log("Database connection failed", err)
     }
 }

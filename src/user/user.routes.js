@@ -15,7 +15,7 @@ import {
 import { doesEmailExists, existsUserById } from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
 import { validateJWT } from "../middlewares/validate-jwt.js";
-import { isDefaultOrAdmin, isAdmin, isEditor, isUser } from "../middlewares/validate-role.js";
+import { isDefaultOrAdminOrEditor ,isDefaultOrAdmin, isAdmin, isEditor, isUser } from "../middlewares/validate-role.js";
 const router = Router();
 router.get("/",
     [

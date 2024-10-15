@@ -10,7 +10,7 @@ import {
 import { existsBlogById, doesBlogExists } from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
 import { validateJWT } from "../middlewares/validate-jwt.js";
-import { isAdmin, isEditor, isAdminOrEditor, isUser } from "../middlewares/validate-role.js";
+import { isDefaultOrAdminOrEditor, isDefaultOrAdmin, isAdmin, isEditor, isAdminOrEditor, isUser } from "../middlewares/validate-role.js";
 
 const router = Router();
 router.get("/",
@@ -24,7 +24,7 @@ router.post(
     "/",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("title", "The title isn't optional").not().isEmpty(),
         check("title").custom(doesBlogExists),
         check("body", "The body isn't optional").not().isEmpty(),
@@ -49,7 +49,7 @@ router.put(
     "/:id",
     [
         validateJWT,
-        isAdminOrEditor,
+        isDefaultOrAdminOrEditor,
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsBlogById),
         validateFields
@@ -61,7 +61,7 @@ router.delete(
     "/:id",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").not().isEmpty(),
         validateFields,

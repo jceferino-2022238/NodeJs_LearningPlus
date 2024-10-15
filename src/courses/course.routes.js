@@ -10,7 +10,7 @@ import {
 import { existsCourseById, doesCourseExists} from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
 import { validateJWT } from "../middlewares/validate-jwt.js";
-import { isAdmin, isEditor, isUser, isAdminOrEditor } from "../middlewares/validate-role.js";
+import { isDefaultOrAdmin, isAdmin, isEditor, isUser, isAdminOrEditor } from "../middlewares/validate-role.js";
 
 const router = Router();
 
@@ -25,7 +25,7 @@ router.post(
     "/",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("title", "The title isn't optional").not().isEmpty(),
         check("title").custom(doesCourseExists),
         check("body", "The body isn't optional").not().isEmpty(),
@@ -48,7 +48,7 @@ router.put(
     "/:id",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").custom(existsCourseById),
         validateFields,
@@ -59,7 +59,7 @@ router.delete(
     "/:id",
     [
         validateJWT,
-        isAdmin,
+        isDefaultOrAdmin,
         check("id", "Not a valid ID").isMongoId(),
         check("id").not().isEmpty(),
         validateFields,

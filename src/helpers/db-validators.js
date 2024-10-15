@@ -2,11 +2,11 @@ import User from "../user/user.model.js";
 import Course from "../courses/course.model.js";
 import Profile from "../profiles/profile.model.js";
 import Blog from "../blogs/blog.model.js"
-
+import { response, request } from "express";
 export const doesEmailExists = async (email = "") =>{
     const existsEmail = await User.findOne({email})
     if(existsEmail){
-        throw new Error(`El correo ${email} ya existe`)
+        throw new Error(`The email ${email} already exists`)
     }
 }
 export const doesCourseExists = async (title = "") =>{
@@ -24,7 +24,7 @@ export const doesProfileExists = async (title = "") =>{
 export const doesBlogExists = async (title = "") =>{
     const existsBlog = await Blog.findOne({title})
     if(existsBlog){
-        throw new Error(`This blof ${title} already exists`)
+        throw new Error(`This blog ${title} already exists`)
     }
 }
 export const existsUserById = async (id = "") =>{
@@ -51,4 +51,14 @@ export const existsBlogById = async (id="") =>{
     if(!existsBlog){
         throw new Error(`The ID ${id} doesn't exist`)
     }
-}
+}/*
+export const isDefaultAdminD = async (id="")=>{
+    const idOfUser = id
+    const res = response;
+    const isDefault = await User.findById(idOfUser)
+    if(isDefault.role === "DEFAULT_ADMIN"){
+        res.status(401).json({
+            msg: "You CANT delete the default admin user"
+        })
+    }
+}*/
