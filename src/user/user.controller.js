@@ -2,16 +2,101 @@ import { response, request } from "express";
 import bcryptjs from "bcryptjs";
 import dotenv from "dotenv";
 import User from "./user.model.js";
+import { sendEmail } from "../helpers/generate-email.js";
+
+dotenv.config();
+
 export const postUserOrAdmin = async (req, res) =>{
     const {name, email, password, role} = req.body;
+
     const user = new User({name, email, password, role})
+    const emailDestiny = email;
     const salt = bcryptjs.genSaltSync();
+
     user.password = bcryptjs.hashSync(password, salt);
-    await user.save()
+
+    await user.save();
+
+    try {
+        const emailSubject = "Welcome to our Platform. LearningPlus";
+        const emailHTML = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Welcome to our Platform. LearningPlus</title>
+                <style>
+                    .container{
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    .header{
+                        background-color: #008526;
+                        text-align: center;
+                        font-family: "Poppins", Sans-serif;
+                        color: black;
+                    }
+                    .emailBody{
+                        background-color: #edfff2;
+                        justify-content: center;
+                    }
+                    .bodyHeader{
+                        text-align: center;
+                    }
+                    .emailText{
+                        text-align: justify;
+                        text-justify: inter-word;
+                    }
+                    .accountInfo{
+                        text-align: left;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <img>
+                        <h1>LearningPlus</h1>
+                    </div>
+                    <div class="emailBody">
+                        <div class="bodyHeader">
+                            <h1>Welcome to LearningPlus</h1>
+                            <h2>Our administrators gave you access to our platform!</h2>
+                        </div>
+                        <div class="emailText">
+                            <p>We are very excited to start this new journey with you, we hope you dont have
+                            any problems when accessing the platform, feel free to contact us for any question</p>
+
+                            <p>Here is the info of your account</p>
+                            <div class="accountInfo">
+                                <p><strong>User: </strong>${name}</p>
+                                <p><strong>Email: </strong>${email}</p>
+                                <p><strong>Password: </strong>${password}</p>
+                                <p><strong>Role: </strong>${role}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <p>&copy; 2024 LearningPlus. All rights deserved.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+        `;
+        await sendEmail(emailDestiny, emailSubject, emailHTML)
+        res.status(201).json({ msg: "The user has been created", user})
+    } catch (error) {
+        console.error("Error sending email: ", error);
+        res.status(500).json({msg: "Error with the proccess of email or user creation"})
+    }
+    /*
     res.status(200).json({
         user,
     })
-}
+    */
+};
+
 export const registerOnPage = async (req, res)=>{
     const {name, email, password} = req.body;
     const user = new User({name, email, password})
