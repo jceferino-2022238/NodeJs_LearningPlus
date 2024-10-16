@@ -9,7 +9,8 @@ import {
     putUser,
     deleteUser,
     putMyUser,
-    deleteMyUser
+    deleteMyUser,
+    putMyPassword
 } from "./user.controller.js";
 
 import { doesEmailExists, existsUserById } from "../helpers/db-validators.js";
@@ -88,6 +89,19 @@ router.put("/putMyAccount/:id",
     ],
     putMyUser
 )
+router.put(
+    "/putMyPassword/:id",
+    [
+        validateJWT,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsUserById),
+        check("password", "The password isn't optional").not().isEmpty(),
+        check("confirmPassword", "You have to confirm the new password").not().isEmpty(),
+        validateFields,
+    ],
+    putMyPassword
+);
+
 router.delete("/:id",
     [
         validateJWT,

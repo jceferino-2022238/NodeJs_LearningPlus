@@ -252,6 +252,29 @@ export const putMyUser = async (req, res = response) =>{
         user
     })
 }
+export const putMyPassword = async (req, res = response) => {
+    try {
+        const { id } = req.params; 
+        const { password, confirmPassword } = req.body;
+        if (password !== confirmPassword) {
+            return res.status(401).json({ msg: "The password and confirmPassword are not the same" });
+        }
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ msg: "User not found" });
+        }
+        const salt = bcryptjs.genSaltSync();
+        const hashedPassword = bcryptjs.hashSync(password, salt);
+
+        await User.findByIdAndUpdate(id, { password: hashedPassword });
+
+        res.status(200).json({ msg: "Password Updated :D" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: "Error updating password" });
+    }
+};
 export const deleteMyUser = async (req, res) =>{
     const { id } = req.params;
     const authUser = req.user;
