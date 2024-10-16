@@ -45,7 +45,27 @@ export const putProfile = async (req, res = response) =>{
         profile
     })
 }
-
+export const publishProfile = async (req, res = response) =>{
+    const { id } = req.params;
+    const platformStatee = "PUBLISHED";
+    await Profile.findByIdAndUpdate(id, {platformState: platformStatee})
+    const profile = await Profile.findOne({_id: id})
+    res.status(200).json({
+        msg: "Profile published",
+        profile
+    })
+}
+export const unpublishProfile = async (req, res = response) =>{
+    const { id } = req.params;
+    const platformStatee = "UNPUBLISHED";
+    //const {_id} = req.body;
+    await Profile.findByIdAndUpdate(id, {platformState: platformStatee})
+    const profile = await Profile.findOne({_id: id})
+    res.status(200).json({
+        msg: "Profile unpublished",
+        profile
+    })
+}
 export const deleteProfile = async (req, res)=>{
     const { id } = req.params;
     const profile = await Profile.findByIdAndUpdate(id, {state: false})

@@ -5,7 +5,9 @@ import {
     getProfiles,
     getProfileById,
     putProfile,
-    deleteProfile
+    deleteProfile,
+    publishProfile,
+    unpublishProfile
  } from "./profile.controller.js";
  import { existsProfileById, doesProfileExists } from "../helpers/db-validators.js";
  import { validateFields } from "../middlewares/validar-campos.js";
@@ -49,6 +51,26 @@ import {
         validateFields,
     ],
     putProfile
+ )
+ router.put("/unpublishProfile/:id",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsProfileById),
+        validateFields
+    ],
+    unpublishProfile
+ )
+ router.put("/publishProfile/:id",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsProfileById),
+        validateFields
+    ],
+    publishProfile
  )
  router.delete("/:id",
     [

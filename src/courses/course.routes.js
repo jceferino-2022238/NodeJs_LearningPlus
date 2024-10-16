@@ -5,7 +5,9 @@ import {
     getCourses,
     getCourseById,
     putCourse,
-    deleteCourse
+    deleteCourse,
+    unpublishCourse,
+    publishCourse
 } from "./course.controller.js";
 import { existsCourseById, doesCourseExists} from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
@@ -54,6 +56,28 @@ router.put(
         validateFields,
     ],
     putCourse
+)
+router.put(
+    "/unpublishCourse/:id",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsCourseById),
+        validateFields 
+    ],
+    unpublishCourse
+)
+router.put(
+    "/publishCourse/:id",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsCourseById),
+        validateFields
+    ],
+    publishCourse
 )
 router.delete(
     "/:id",

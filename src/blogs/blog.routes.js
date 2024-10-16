@@ -5,7 +5,9 @@ import {
     getBlogs,
     getBlogById,
     putBlog,
-    deleteBlog
+    deleteBlog,
+    publishBlog,
+    unpublishBlog
 } from "./blog.controller.js";
 import { existsBlogById, doesBlogExists } from "../helpers/db-validators.js";
 import { validateFields } from "../middlewares/validar-campos.js";
@@ -56,7 +58,28 @@ router.put(
     ],
     putBlog
 )
-
+router.put(
+    "/publishBlog/:id",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
+        check("id", "Not a vlaid ID").isMongoId(),
+        check("id").custom(existsBlogById),
+        validateFields
+    ],
+    publishBlog
+)
+router.put(
+    "/unpublishBlog/:id",
+    [
+        validateJWT,
+        isDefaultOrAdmin,
+        check("id", "Not a valid ID").isMongoId(),
+        check("id").custom(existsBlogById),
+        validateFields
+    ],
+    unpublishBlog
+)
 router.delete(
     "/:id",
     [

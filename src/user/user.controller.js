@@ -266,7 +266,6 @@ export const putMyPassword = async (req, res = response) => {
         }
         const salt = bcryptjs.genSaltSync();
         const hashedPassword = bcryptjs.hashSync(password, salt);
-
         await User.findByIdAndUpdate(id, { password: hashedPassword });
 
         res.status(200).json({ msg: "Password Updated :D" });

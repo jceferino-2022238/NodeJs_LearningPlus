@@ -9,6 +9,11 @@ const ProfileSchema = new mongoose.Schema({
         type: String,
         required: [true, "Body is required"]
     },
+    platformState: {
+        type: String,
+        enum: ["PUBLISHED","UNPUBLISHED"],
+        default: "PUBLISHED"
+    },
     state: {
         type: Boolean,
         default: true

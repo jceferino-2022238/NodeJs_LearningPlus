@@ -45,6 +45,28 @@ export const putCourse = async (req, res = response) =>{
     })
 }
 
+export const unpublishCourse = async (req, res = response) =>{
+    const { id } = req.params;
+    const platformStatee = "UNPUBLISHED";
+    await Course.findByIdAndUpdate(id, {platformState: platformStatee})
+    const course = await Course.findOne({_id: id})
+    res.status(200).json({
+        msg: "Course unpublished",
+        course
+    })
+}
+
+export const publishCourse = async (req, res = response) =>{
+    const { id } = req.params;
+    const platformStatee = "PUBLISHED";
+    await Course.findByIdAndUpdate(id, {platformState: platformStatee})
+    const course = await Course.findOne({_id: id})
+    res.status(200).json({
+        msg: "Course published",
+        course
+    })
+}
+
 export const deleteCourse = async(req, res) =>{
     const {id} = req.params;
     const course = await Course.findByIdAndUpdate(id, {state: false})

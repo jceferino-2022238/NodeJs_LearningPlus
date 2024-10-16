@@ -42,7 +42,26 @@ export const putBlog = async (req, res = response) =>{
         blog
     })
 }
-
+export const publishBlog = async (req, res = response) =>{
+    const { id } = req.params;
+    const platformStatee = "PUBLISHED";
+    await Blog.findByIdAndUpdate(id, {platformState: platformStatee})
+    const blog = await Blog.findOne({_id: id})
+    res.status(200).json({
+        msg: "Blog published",
+        blog
+    })
+}
+export const unpublishBlog = async (req, res = response) =>{
+    const { id } = req.params;
+    const platformStatee = "UNPUBLISHED";
+    await Blog.findByIdAndUpdate(id, {platformState: platformStatee})
+    const blog = await Blog.findOne({_id: id})
+    res.status(200).json({
+        msg: "Blog unpublished",
+        blog
+    })
+}
 export const deleteBlog = async(req, res) =>{
     const { id } = req.params;
     const blog  = await Blog.findByIdAndUpdate(id, {state: false})
