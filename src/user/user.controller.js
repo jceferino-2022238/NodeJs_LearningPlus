@@ -263,7 +263,7 @@ export const deleteMyUser = async (req, res) =>{
 
     const emailDestiny = authUser.email;
 
-    const user = await User.findByIdAndUpdate(id, {state: false})
+    const user = await User.findByIdAndDelete(id);
     try {
         const emailSubject = "Leaving our Platform. LearningPlus"
         const emailHTML = `
@@ -329,13 +329,15 @@ export const deleteMyUser = async (req, res) =>{
             </body>
             </html>
         `;
-    } catch (error) {
-        console.error("Error sending email: ", error);
+        await sendEmail(emailDestiny, emailSubject, emailHTML)
         res.status(200).json({
-            msg: "Your Account has been deleted, Goodbye",
+            msg: "User deactivated",
             user,
             authUser
         })
+    } catch (error) {
+        console.error("Error sending email", error);
+        res.status(500).json({msg: "Error with the proccess of email or elimination of user"});
     }
 }
 export const deleteUser = async(req, res) =>{
