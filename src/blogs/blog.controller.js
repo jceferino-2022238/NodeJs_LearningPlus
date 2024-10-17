@@ -10,18 +10,35 @@ export const blogPost = async(req, res) =>{
 }
 
 export const getBlogs = async (req = request, res = response) =>{
-    const {limit, from} = req.query;
-    const query = {state: true};
-    const [total, blogs] = await Promise.all([
-        Blog.countDocuments(query),
-        Blog.find(query)
-            .skip(Number(from))
-            .limit(Number(limit))
-    ]);
-    res.status(200).json({
-        total,
-        blogs,
-    })
+    const authUser = req.user;
+    console.log(authUser.role)
+    if(authUser.role === "ADMIN_ROLE" || authUser.role === "DEFAULT_ADMIN"){
+        const query = {state: true};
+        const {limit, from} = req.query;
+        const [total, blogs] = await Promise.all([
+            Blog.countDocuments(query),
+            Blog.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+        return res.status(200).json({
+            total, 
+            blogs
+        })
+    } else if(authUser.role === "USER_ROLE" || authUser.role === "EDITOR_ROLE"){
+        const query = {state: true, platformState: "PUBLISHED"}
+        const {limit, from} = req.query;
+        const [total, blogs] = await Promise.all([
+            Blog.countDocuments(query),
+            Blog.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+        return res.status(200).json({
+            total,
+            blogs
+        })
+    }
 }
 
 export const getBlogById = async (req, res) =>{

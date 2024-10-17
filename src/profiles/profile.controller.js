@@ -12,19 +12,35 @@ export const profilePost = async(req, res) =>{
 }
 
 export const getProfiles = async (req = request, res = response) =>{
-    const {limit, from} = req.query;
-    const query = {state: true};
-
-    const [total, profiles] = await Promise.all([
-        Profile.countDocuments(query),
-        Profile.find(query)
-            .skip(Number(from))
-            .limit(Number(limit))
-    ]);
-    res.status(200).json({
-        total,
-        profiles,
-    })
+    const authUser = req.user;
+    console.log(authUser.role)
+    if(authUser.role === "ADMIN_ROLE" || authUser.role === "DEFAULT_ADMIN"){
+        const query = {state: true};
+        const {limit, from} = req.query;
+        const [total, profiles] = await Promise.all([
+            Profile.countDocuments(query),
+            Profile.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+        return res.status(200).json({
+            total,
+            profiles
+        })
+    } else if(authUser.role === "USER_ROLE" || authUser.role === "EDITOR_ROLE"){
+        const query = {state: true, platformState: "PUBLISHED"}
+        const {limit, from} = req.query;
+        const [total, profiles] = await Promise.all([
+            Profile.countDocuments(query),
+            Profile.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+        return res.status(200).json({
+            total,
+            profiles
+        })
+    }
 }
 
 export const getProfileById = async (req, res) =>{

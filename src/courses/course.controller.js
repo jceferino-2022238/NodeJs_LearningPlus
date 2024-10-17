@@ -1,4 +1,5 @@
 import Course from "./course.model.js";
+import User from "../user/user.model.js";
 import { request, response } from "express";
 export const coursePost = async (req, res) =>{
     const {title, body, image} = req.body;
@@ -11,19 +12,35 @@ export const coursePost = async (req, res) =>{
 }
 
 export const getCourses = async (req = request, res = response) =>{
-    const {limit, from} = req.query;
-    const query = {state: true};
-
-    const [total, courses] = await Promise.all([
-        Course.countDocuments(query),
-        Course.find(query)
-            .skip(Number(from))
-            .limit(Number(limit))
-    ]);
-    res.status(200).json({
-        total,
-        courses,
-    })
+    const authUser = req.user;
+    console.log(authUser.role)
+    if(authUser.role === "ADMIN_ROLE" || authUser.role === "DEFAULT_ADMIN"){
+        const query = {state: true};
+        const {limit, from} = req.query;
+        const [total, courses] = await Promise.all([
+            Course.countDocuments(query),
+            Course.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+        return res.status(200).json({
+            total,
+            courses,
+        })
+    } else if(authUser.role === "USER_ROLE" || authUser.role === "EDITOR_ROLE"){
+        const query = {state:true, platformState: "PUBLISHED"}
+        const {limit, from} = req.query;
+        const [total, courses] = await Promise.all([
+            Course.countDocuments(query),
+            Course.find(query)
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+        return res.status(200).json({
+            total,
+            courses,
+        })
+    }
 }
 
 export const getCourseById = async (req, res) => {
