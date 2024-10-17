@@ -3,7 +3,6 @@ import bcryptjs from "bcryptjs";
 import dotenv from "dotenv";
 import User from "./user.model.js";
 import { sendEmail } from "../helpers/generate-email.js";
-
 dotenv.config();
 
 export const postUserOrAdmin = async (req, res) =>{
@@ -27,36 +26,52 @@ export const postUserOrAdmin = async (req, res) =>{
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Welcome to our Platform. LearningPlus</title>
                 <style>
-                    .container{
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
                     .header{
-                        background-color: #008526;
-                        text-align: center;
-                        font-family: "Poppins", Sans-serif;
-                        color: black;
+                        justify-content: center;
+                        padding-left: 30%;
+                        background-color: #0B2545;
+                        display: flex;
+                        flex-direction: row;
+                        color: white;
+                    }
+                    .header h1{
+                        margin-top: 10%;
+                        font-size: 35px;
+                    }
+                    .header img{
+                        width: 180px;
+                        height: 180px;
                     }
                     .emailBody{
-                        background-color: #edfff2;
-                        justify-content: center;
+                        padding: 20px;
                     }
                     .bodyHeader{
                         text-align: center;
+                        color: #134074;
+                    }
+                    .bodyHeader h1{
+                        font-size: 30px;
+                    }
+                    .bodyHeader h2{
+                        font-size: 25px;
                     }
                     .emailText{
-                        text-align: justify;
-                        text-justify: inter-word;
+                        font-size: 15px;
+                        color: black;
                     }
-                    .accountInfo{
-                        text-align: left;
+                    .footer{
+                        text-align: center;
+                        color: white;
+                        background-color: #0B2545;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
                     }
                 </style>
             </head>
             <body>
                 <div class="container">
                     <div class="header">
-                        <img>
+                        <img src="https://i.postimg.cc/J4Z4b2sp/LEARNINGP-LOGO.png" alt="LearningPlus Logo">
                         <h1>LearningPlus</h1>
                     </div>
                     <div class="emailBody">
@@ -110,63 +125,78 @@ export const registerOnPage = async (req, res)=>{
             <!DOCTYPE html>
             <html lang="en">
             <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Welcome to our Platform. LearningPlus</title>
-                <style>
-                    .container{
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
-                    .header{
-                        background-color: #008526;
-                        text-align: center;
-                        font-family: "Poppins", "Sans-serif";
-                        color: black
-                    }
-                    .emailBody{
-                        background-color: #edfff2;
-                        justify-content: center;
-                    }
-                    .bodyHeader{
-                        text-align: center;
-                    }
-                    .emailText{
-                        text-align: justify;
-                        text-justify: inter-word;
-                    }
-                    .accountInfo{
-                        text-align: left;
-                    }
-                </style>
-            </head>
-            <body>
-                <div class="container">
-                    <div class="header">
-                        <img>
-                        <h1>LearningPlus</h1>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Welcome to our Platform. LearningPlus</title>
+            <style>
+                .header{
+                    justify-content: center;
+                    padding-left: 30%;
+                    background-color: #0B2545;
+                    display: flex;
+                    flex-direction: row;
+                    color: white;
+                }
+                .header h1{
+                    margin-top: 10%;
+                    font-size: 35px;
+                }
+                .header img{
+                    width: 180px;
+                    height: 180px;
+                }
+                .emailBody{
+                    padding: 20px;
+                }
+                .bodyHeader{
+                    text-align: center;
+                    color: #134074;
+                }
+                .bodyHeader h1{
+                    font-size: 30px;
+                }
+                .bodyHeader h2{
+                    font-size: 25px;
+                }
+                .emailText{
+                    font-size: 15px;
+                    color: black;
+                }
+                .footer{
+                    text-align: center;
+                    color: white;
+                    background-color: #0B2545;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <img src="https://i.postimg.cc/J4Z4b2sp/LEARNINGP-LOGO.png" alt="LearningPlus Logo">
+                    <h1>LearningPlus</h1>
+                </div>
+                <div class="emailBody">
+                    <div class="bodyHeader">
+                        <h1>Welcome to LearningPlus</h1>
+                        <h2>Thank you for registering on our platform!</h2>
                     </div>
-                    <div class="emailBody">
-                        <div class="bodyHeader">
-                            <h1>Welcome to LearningPlus</h1>
-                            <h2>Thank you for registrating in our platform!</h2>
+                    <div class="emailText">
+                        <p>We are very excited to start this journey with you. If you have any issues accessing the platform, feel free to contact us with any questions.</p>
+                        <p>Here is your account information:</p>
+                        <div class="accountInfo">
+                            <p><strong>User:</strong> ${name}</p>
+                            <p><strong>Email:</strong> ${email}</p>
+                            <p><strong>Password:</strong> ${password}</p>
                         </div>
-                        <div class="emailText">
-                            <p>We are very excited to start this new journey with you, we hope you dont have
-                            any problems when accessing the problem, feel free to contact us for any question</p>
-                            <p>Here is the info of your account</p>
-                            <div class="accountInfo">
-                                <p><strong>User: </strong>${name}</p>
-                                <p><strong>Email: </strong>${email}</p>
-                                <p><strong>Password: </strong>${password}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer">
-                        <p>&copy; 2024 LearningPlus. All rights deserved</p>
                     </div>
                 </div>
-            </body>
+                <div class="footer">
+                    <p>&copy; 2024 LearningPlus. All rights reserved.</p>
+                </div>
+            </div>
+        </body>
         `;
         await sendEmail(emailDestiny, emailSubject, emailHTML)
         res.status(201).json({msg: "Register on page done correctly", user})
@@ -296,36 +326,52 @@ export const deleteMyUser = async (req, res) =>{
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Leaving our Platform. LearningPlus</title>
                 <style>
-                    .container{
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
                     .header{
-                        background-color: #008526;
-                        text-align: center;
-                        font-family: "Poppins", "Sans-serif";
-                        color: black;
+                        justify-content: center;
+                        padding-left: 30%;
+                        background-color: #0B2545;
+                        display: flex;
+                        flex-direction: row;
+                        color: white;
+                    }
+                    .header h1{
+                        margin-top: 10%;
+                        font-size: 35px;
+                    }
+                    .header img{
+                        width: 180px;
+                        height: 180px;
                     }
                     .emailBody{
-                        background-color: #edfff2;
-                        justify-content: center;
+                        padding: 20px;
                     }
                     .bodyHeader{
                         text-align: center;
+                        color: #134074;
+                    }
+                    .bodyHeader h1{
+                        font-size: 30px;
+                    }
+                    .bodyHeader h2{
+                        font-size: 25px;
                     }
                     .emailText{
-                        text-align: justify;
-                        text-justify: inter-word;
+                        font-size: 15px;
+                        color: black;
                     }
-                    .contactInfo{
-                        text-align: left;
+                    .footer{
+                        text-align: center;
+                        color: white;
+                        background-color: #0B2545;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
                     }
                 </style>
             </head>
             <body>
                 <div class="container">
                     <div class="header">
-                        <img>
+                        <img src="https://i.postimg.cc/J4Z4b2sp/LEARNINGP-LOGO.png" alt="LearningPlus Logo">
                         <h1>LearningPlus</h1>
                     </div>
                     <div class="emailBody">
@@ -382,36 +428,52 @@ export const deleteUser = async(req, res) =>{
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Leaving our Platform. LearningPlus</title>
                 <style>
-                    .container{
-                        margin: 0 auto;
-                        padding: 20px;
-                    }
                     .header{
-                        background-color: #008526;
-                        text-align: center;
-                        font-family: "Poppins", "Sans-serif";
-                        color: black;
+                        justify-content: center;
+                        padding-left: 30%;
+                        background-color: #0B2545;
+                        display: flex;
+                        flex-direction: row;
+                        color: white;
+                    }
+                    .header h1{
+                        margin-top: 10%;
+                        font-size: 35px;
+                    }
+                    .header img{
+                        width: 180px;
+                        height: 180px;
                     }
                     .emailBody{
-                        background-color: #edfff2;
-                        justify-content: center;
+                        padding: 20px;
                     }
                     .bodyHeader{
                         text-align: center;
+                        color: #134074;
+                    }
+                    .bodyHeader h1{
+                        font-size: 30px;
+                    }
+                    .bodyHeader h2{
+                        font-size: 25px;
                     }
                     .emailText{
-                        text-align: justify;
-                        text-justify: inter-word;
+                        font-size: 15px;
+                        color: black;
                     }
-                    .contactInfo{
-                        text-align: left;
+                    .footer{
+                        text-align: center;
+                        color: white;
+                        background-color: #0B2545;
+                        padding-top: 10px;
+                        padding-bottom: 10px;
                     }
                 </style>
             </head>
             <body>
                 <div class="container">
                     <div class="header">
-                        <img>
+                        <img src="https://i.postimg.cc/J4Z4b2sp/LEARNINGP-LOGO.png" alt="LearningPlus Logo">
                         <h1>LearningPlus</h1>
                     </div>
                     <div class="emailBody">
