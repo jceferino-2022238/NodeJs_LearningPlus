@@ -9,6 +9,7 @@ import authRoutes from "../src/auth/auth.routes.js"
 import courseRoutes from "../src/courses/course.routes.js";
 import profileRoutes from "../src/profiles/profile.routes.js"
 import blogRoutes from "../src/blogs/blog.routes.js"
+import contactRoutes from "../src/contact/contact.routes.js"
 class Server{
     constructor(){
         this.app = express();
@@ -17,8 +18,8 @@ class Server{
         this.authPath = "/learningPlus/v1/auth";
         this.coursePath = "/learningPlus/v1/course";
         this.profilePath = "/learningPlus/v1/profile";
-        this.blogPath = "/learningPlus/v1/blog"
-
+        this.blogPath = "/learningPlus/v1/blog";
+        this.contactPath = "/learningPlus/v1/contact";
         this.middlewares();
         this.conectarDB();
         this.routes();
@@ -43,6 +44,7 @@ class Server{
         this.app.use(this.coursePath, courseRoutes);
         this.app.use(this.profilePath, profileRoutes);
         this.app.use(this.blogPath, blogRoutes)
+        this.app.use(this.contactPath, contactRoutes)
     }
 
     listen(){
